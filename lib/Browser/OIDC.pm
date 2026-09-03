@@ -14,7 +14,7 @@ use HTTP::Tiny;
 use JSON::MaybeXS;
 use MIME::Base64 qw/encode_base64url decode_base64url/;
 
-our $VERSION = '0.000';
+our $VERSION = '0.001';
 
 my $tiny = HTTP::Tiny->new;
 
