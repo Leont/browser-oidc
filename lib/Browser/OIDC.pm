@@ -14,6 +14,8 @@ use HTTP::Tiny;
 use JSON::MaybeXS;
 use MIME::Base64 qw/encode_base64 encode_base64url decode_base64url/;
 
+use Browser::OIDC::TokenResponse;
+
 our $VERSION = '0.001';
 
 my $tiny = HTTP::Tiny->new;
@@ -119,7 +121,8 @@ sub get_token($self, %options) {
 			}
 			my $response = $tiny->post_form($self->{token_endpoint}, \%arguments, { headers => \%headers });
 			if ($response->{status} == 200) {
-				return decode_json($response->{content});
+				my $value = decode_json($response->{content});
+				return Browser::OIDC::TokenResponse->new(parent => $self, value => $value);
 			} else {
 				croak "Could not get token ($response->{status}): $response->{content}";
 			}
