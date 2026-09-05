@@ -67,6 +67,14 @@ sub get_token($self, %options) {
 	$full_target->query_param_append(scope => join ' ', @scope);
 	my $state = encode_base64url(random_bytes(16));
 	$full_target->query_param_append(state => $state);
+	for my $name (qw/display nonce max_age/) {
+		if ($options{$name}) {
+			$full_target->query_param_append($name => $options{$name});
+		}
+	}
+	if ($options{prompt}) {
+		$full_target->query_param_append(prompt => join ' ', $options{prompt}->@*);
+	}
 
 	my $ok = open_browser($full_target->canonical);
 	while (1) {
@@ -184,6 +192,24 @@ The message that will be shown to the user in the browser on completion.
 =item message_type
 
 The content type of the message e.g. C<text/plain> or C<text/html>.
+
+=item display
+
+ASCII string value that specifies how the Authorization Server displays the authentication and consent user interface pages to the End-User. The defined values are: C<page>, C<popup>, C<touch>, and C<wap>.
+
+=item prompt
+
+Case-sensitive list of ASCII string values that specifies whether the Authorization Server prompts the End-User for reauthentication and consent. The defined values are: C<none>, C<login>, C<consent>, and C<select_account>.
+
+=item max_age
+
+Maximum Authentication Age. Specifies the allowable elapsed time in seconds since the last time the End-User was actively authenticated by the OP. Note that C<max_age=0> is equivalent to C<prompt=login>.
+
+=item login_hint
+
+Hint to the Authorization Server about the login identifier the End-User might use to log in (if necessary).
+
+=item nonce
 
 =back
 
