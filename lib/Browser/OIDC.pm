@@ -36,8 +36,7 @@ sub new($class, $target_base) {
 	croak "code is required for authorization code flow" unless $response_types_supported{code}; # for now
 
 	return bless {
-		authorization_endpoint => $config->{authorization_endpoint},
-		token_endpoint         => $config->{token_endpoint},
+		$config->%{qw/issuer authorization_endpoint token_endpoint claims_supported scopes_supported/},
 		challenges_supported   => \%challenges_supported,
 		auth_methods_supported => \%auth_methods_supported,
 	}, $class;
@@ -131,6 +130,18 @@ sub get_token($self, %options) {
 	}
 }
 
+sub issuer($self) {
+	return $self->{issuer};
+}
+
+sub claims_supported($self) {
+	return $self->{claims_supported}->@*;
+}
+
+sub scopes_supported($self) {
+	return $self->{scopes_supported}->@*;
+}
+
 1;
 
 __END__
@@ -212,6 +223,24 @@ Hint to the Authorization Server about the login identifier the End-User might u
 =item nonce
 
 =back
+
+=head2 issuer
+
+ $oidc->issuer;
+
+This returns the issuer. This should match the C<iss> values in the tokens.
+
+=head2 claims_supported
+
+ $oidc->claims_supported;
+
+This returns the list of supported claims.
+
+=head2 scopes_supported
+
+ $oidc->scopes_supported;
+
+This returns the list of supported scopes.
 
 =head1 TODO
 
