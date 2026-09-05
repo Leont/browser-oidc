@@ -13,7 +13,9 @@ SYNOPSIS
 
 DESCRIPTION
 
-    This module will open a browser for you to log in
+    This module will open a browser for you to log into some OIDC provider,
+    and will temporarily run a webserver on localhost to receive the
+    redirect with the results from your browser.
 
 METHODS
 
@@ -27,9 +29,12 @@ METHODS
 
      $oidc->get_token(%options);
 
+    This fetches an OIDC token from the endpoint. It takes the following
+    options:
+
     client_id
 
-      The client identifier. Technically optional but practically required.
+      The client identifier. Effectively mandatory.
 
     client_secret
 
@@ -37,7 +42,7 @@ METHODS
 
     pkce
 
-      If true this will enable Proof Key for Code Exchange (PKCE)
+      If true this will enable Proof Key for Code Exchange (PKCE).
 
     scope
 
@@ -51,13 +56,13 @@ METHODS
 
     message_type
 
-      The content type of the message.
+      The content type of the message e.g. text/plain or text/html.
 
 TODO
 
     Open ID Connect and OAuth2 are large standards, so far only a tiny
-    fraction is implemented. Feel free to request specific features if you
-    need them.
+    fraction is implemented here. Feel free to request specific features if
+    you need them. Patches are welcome.
 
 AUTHOR
 
