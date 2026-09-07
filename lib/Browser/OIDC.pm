@@ -38,7 +38,7 @@ sub new($class, $target_base) {
 	croak "code is required for authorization code flow" unless $response_types_supported{code}; # for now
 
 	return bless {
-		$config->%{qw/issuer authorization_endpoint token_endpoint claims_supported scopes_supported/},
+		$config->%{qw/issuer authorization_endpoint token_endpoint claims_supported scopes_supported jwks_uri/},
 		challenges_supported   => \%challenges_supported,
 		auth_methods_supported => \%auth_methods_supported,
 	}, $class;
@@ -143,6 +143,12 @@ sub claims_supported($self) {
 
 sub scopes_supported($self) {
 	return $self->{scopes_supported}->@*;
+}
+
+sub jwks($self) {
+	my $response = $tiny->get($self->{jwks_uri});
+	croak "Could not fetch JSON Web Key Set" if $response->{status} != 200;
+	return decode_json($response->{content});
 }
 
 1;
