@@ -16,7 +16,7 @@ use MIME::Base64 qw/encode_base64 encode_base64url decode_base64url/;
 
 use Browser::OIDC::TokenResponse;
 
-our $VERSION = '0.001';
+our $VERSION = '0.002';
 
 my $tiny = HTTP::Tiny->new;
 

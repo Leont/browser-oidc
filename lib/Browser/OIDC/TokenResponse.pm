@@ -6,7 +6,7 @@ use experimental qw/signatures postderef lexical_subs/;
 
 use MIME::Base64 'decode_base64';
 
-our $VERSION = '0.001';
+our $VERSION = '0.002';
 
 sub new($class, %options) {
 	return bless {
